@@ -513,6 +513,7 @@ body.lang-ar .nav-cta:hover .nav-cta-arrow { transform: translateX(-4px); }
     justify-content: center;
 }
 
+
 .section-header { margin-bottom: 56px; text-align: center; }
 
 .section-num {
@@ -533,16 +534,18 @@ body.lang-ar .nav-cta:hover .nav-cta-arrow { transform: translateX(-4px); }
     color: var(--white);
     line-height: 1.1;
     margin-bottom: 16px;
+    text-shadow: 0 2px 24px rgba(0,0,0,0.9), 0 0 40px rgba(0,0,0,0.7);
 }
 
-.section-title .accent { color: var(--gold); }
+.section-title .accent { color: var(--gold); text-shadow: 0 2px 24px rgba(0,0,0,0.9), 0 0 20px rgba(0,0,0,0.8); }
 
 .section-subtitle {
     font-size: 17px;
-    color: var(--gray);
+    color: rgba(245, 245, 245, 0.72);
     max-width: 640px;
     margin: 0 auto;
     line-height: 1.7;
+    text-shadow: 0 1px 12px rgba(0,0,0,0.95), 0 0 24px rgba(0,0,0,0.8);
 }
 
 /* Hero */
@@ -629,6 +632,7 @@ body.lang-ar .nav-cta:hover .nav-cta-arrow { transform: translateX(-4px); }
     color: var(--white);
     margin: 0;
     line-height: 1.2;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.95), 0 0 40px rgba(0,0,0,0.7);
 }
 
 body.lang-ar .slogan-text { letter-spacing: 1px; }
@@ -636,10 +640,11 @@ body.lang-ar .slogan-text { letter-spacing: 1px; }
 .slogan-sub {
     font-family: var(--font-body);
     font-size: 16px;
-    color: var(--gray);
+    color: rgba(245, 245, 245, 0.82);
     line-height: 1.7;
     margin: 0;
     max-width: 600px;
+    text-shadow: 0 1px 12px rgba(0,0,0,0.95);
 }
 
 body.lang-ar .slogan-sub { font-family: var(--font-body); }
@@ -812,13 +817,24 @@ body.lang-ar .btn:hover .btn-arrow { transform: translateX(-4px); }
     color: var(--white);
     margin-bottom: 24px;
     line-height: 1.2;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.95), 0 0 40px rgba(0,0,0,0.8);
+}
+
+.about-text {
+    background: rgba(20, 20, 20, 0.55);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 16px;
+    padding: 36px 40px;
+    border: 1px solid rgba(245, 245, 245, 0.06);
 }
 
 .about-text p {
-    color: var(--gray);
+    color: rgba(245, 245, 245, 0.88);
     font-size: 16px;
     margin-bottom: 16px;
     line-height: 1.8;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.9);
 }
 
 .about-tags {

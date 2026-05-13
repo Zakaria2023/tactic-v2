@@ -1,7 +1,8 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { T } from '@/app/contexts/LanguageContext';
+import { T } from "@/app/contexts/LanguageContext";
+import Image from "next/image";
+import Link from "next/link";
 
 const socialIcons = {
   linkedin: (
@@ -10,7 +11,14 @@ const socialIcons = {
     </svg>
   ),
   instagram: (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
       <rect x="3" y="3" width="18" height="18" rx="5" />
       <circle cx="12" cy="12" r="4" />
       <circle cx="17.5" cy="6.5" r="1" fill="currentColor" />
@@ -34,53 +42,113 @@ export default function Footer() {
       <div className="footer-top">
         <div className="footer-brand">
           <div className="nav-logo">
-            <span className="logo-bracket">[</span>
-            <span className="logo-text">TAKTEEQ</span>
-            <span className="logo-bracket">]</span>
+            <Image
+              src="/logo.svg"
+              alt="Takteeq"
+              width={300}
+              height={100}
+              style={{ objectFit: "contain" }}
+            />
           </div>
-          <p className="footer-brand-desc"><T k="footer.brand.desc" /></p>
+          <p className="footer-brand-desc">
+            <T k="footer.brand.desc" />
+          </p>
           <div className="footer-social">
-            <a href="#" className="social-link" aria-label="LinkedIn">{socialIcons.linkedin}</a>
-            <a href="#" className="social-link" aria-label="Instagram">{socialIcons.instagram}</a>
-            <a href="#" className="social-link" aria-label="Facebook">{socialIcons.facebook}</a>
-            <a href="#" className="social-link" aria-label="GitHub">{socialIcons.github}</a>
+            <a href="#" className="social-link" aria-label="LinkedIn">
+              {socialIcons.linkedin}
+            </a>
+            <a href="#" className="social-link" aria-label="Instagram">
+              {socialIcons.instagram}
+            </a>
+            <a href="#" className="social-link" aria-label="Facebook">
+              {socialIcons.facebook}
+            </a>
+            <a href="#" className="social-link" aria-label="GitHub">
+              {socialIcons.github}
+            </a>
           </div>
         </div>
 
         <div className="footer-col">
-          <h4 className="footer-title"><T k="footer.quick" /></h4>
-          <Link href="/" className="footer-link"><T k="nav.home" /></Link>
-          <Link href="/about" className="footer-link"><T k="nav.about" /></Link>
-          <Link href="/services" className="footer-link"><T k="nav.services" /></Link>
-          <Link href="/portfolio" className="footer-link"><T k="nav.portfolio" /></Link>
-          <Link href="/blog" className="footer-link"><T k="nav.blog" /></Link>
-          <Link href="/careers" className="footer-link"><T k="nav.careers" /></Link>
-          <Link href="/contact" className="footer-link"><T k="nav.contact" /></Link>
+          <h4 className="footer-title">
+            <T k="footer.quick" />
+          </h4>
+          <Link href="/" className="footer-link">
+            <T k="nav.home" />
+          </Link>
+          <Link href="/about" className="footer-link">
+            <T k="nav.about" />
+          </Link>
+          <Link href="/services" className="footer-link">
+            <T k="nav.services" />
+          </Link>
+          <Link href="/portfolio" className="footer-link">
+            <T k="nav.portfolio" />
+          </Link>
+          <Link href="/blog" className="footer-link">
+            <T k="nav.blog" />
+          </Link>
+          <Link href="/careers" className="footer-link">
+            <T k="nav.careers" />
+          </Link>
+          <Link href="/contact" className="footer-link">
+            <T k="nav.contact" />
+          </Link>
         </div>
 
         <div className="footer-col">
-          <h4 className="footer-title"><T k="footer.services" /></h4>
-          <Link href="/services#web" className="footer-link"><T k="svc.1.title" /></Link>
-          <Link href="/services#erp" className="footer-link"><T k="svc.3.title" /></Link>
-          <Link href="/services#saas" className="footer-link"><T k="svc.2.title" /></Link>
-          <Link href="/services#mobile" className="footer-link"><T k="svc.4.title" /></Link>
-          <Link href="/services#security" className="footer-link"><T k="svc.5.title" /></Link>
-          <Link href="/services#hosting" className="footer-link"><T k="svc.6.title" /></Link>
+          <h4 className="footer-title">
+            <T k="footer.services" />
+          </h4>
+          <Link href="/services#web" className="footer-link">
+            <T k="svc.1.title" />
+          </Link>
+          <Link href="/services#erp" className="footer-link">
+            <T k="svc.3.title" />
+          </Link>
+          <Link href="/services#saas" className="footer-link">
+            <T k="svc.2.title" />
+          </Link>
+          <Link href="/services#mobile" className="footer-link">
+            <T k="svc.4.title" />
+          </Link>
+          <Link href="/services#security" className="footer-link">
+            <T k="svc.5.title" />
+          </Link>
+          <Link href="/services#hosting" className="footer-link">
+            <T k="svc.6.title" />
+          </Link>
         </div>
 
         <div className="footer-col">
-          <h4 className="footer-title"><T k="footer.policies" /></h4>
-          <Link href="/privacy" className="footer-link"><T k="footer.policy.1" /></Link>
-          <Link href="/terms" className="footer-link"><T k="footer.policy.2" /></Link>
-          <Link href="/cookies" className="footer-link"><T k="footer.policy.3" /></Link>
-          <Link href="/faq" className="footer-link"><T k="footer.policy.6" /></Link>
-          <Link href="/contact" className="footer-link"><T k="nav.contact" /></Link>
+          <h4 className="footer-title">
+            <T k="footer.policies" />
+          </h4>
+          <Link href="/privacy" className="footer-link">
+            <T k="footer.policy.1" />
+          </Link>
+          <Link href="/terms" className="footer-link">
+            <T k="footer.policy.2" />
+          </Link>
+          <Link href="/cookies" className="footer-link">
+            <T k="footer.policy.3" />
+          </Link>
+          <Link href="/faq" className="footer-link">
+            <T k="footer.policy.6" />
+          </Link>
+          <Link href="/contact" className="footer-link">
+            <T k="nav.contact" />
+          </Link>
         </div>
       </div>
 
       <div className="footer-bottom">
-        <p><T k="footer.copyright" /></p>
-        <p className="footer-meta"><T k="footer.meta" /></p>
+        <p>
+          <T k="footer.copyright" />
+        </p>
+        <p className="footer-meta">
+          <T k="footer.meta" />
+        </p>
       </div>
     </footer>
   );
