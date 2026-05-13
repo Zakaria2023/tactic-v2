@@ -96,7 +96,7 @@ export default function Navbar() {
     <nav className={`navbar ${scrolled ? "scrolled" : ""}`}>
       <Link href="/" className="nav-logo" style={{ textDecoration: "none" }}>
         <Image
-          src="/logo.svg"
+          src="/white-logo.svg"
           alt="Takteeq"
           width={200}
           height={80}

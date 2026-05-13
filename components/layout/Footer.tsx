@@ -43,7 +43,7 @@ export default function Footer() {
         <div className="footer-brand">
           <div className="nav-logo">
             <Image
-              src="/logo.svg"
+              src="/white-logo.svg"
               alt="Takteeq"
               width={300}
               height={100}
