@@ -73,7 +73,7 @@ export default function HomeScene() {
           const tg = new TextGeometry(text[i], {
             font,
             size: letterSize,
-            height: 1.2,
+            depth: 1.2,
             curveSegments: 6,
             bevelEnabled: true,
             bevelThickness: 0.15,
@@ -93,7 +93,7 @@ export default function HomeScene() {
           const geom = new TextGeometry(text[i], {
             font,
             size: letterSize,
-            height: 1.2,
+            depth: 1.2,
             curveSegments: 6,
             bevelEnabled: true,
             bevelThickness: 0.15,
