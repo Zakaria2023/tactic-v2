@@ -308,17 +308,7 @@ export default function HomePage() {
         {/* HERO */}
         <section id="home" className="section hero">
           <div className="hero-content">
-            <div className="hero-label">
-              <span className="label-dot"></span>
-              <span>
-                <T k="hero.label" />
-              </span>
-            </div>
-            <div className="hero-3d-space" id="hero3dSpace">
-              <p className="hero-3d-hint">
-                <T k="hero.hint" />
-              </p>
-            </div>
+            <div className="hero-3d-space" id="hero3dSpace"></div>
             <div className="hero-slogan">
               <div className="slogan-line"></div>
               <p className="slogan-text">
@@ -329,12 +319,6 @@ export default function HomePage() {
               </p>
               <div className="slogan-line"></div>
             </div>
-            <button className="reset-btn" type="button" onClick={onReset}>
-              <span className="reset-icon">↺</span>
-              <span>
-                <T k="hero.reset" />
-              </span>
-            </button>
             <div className="hero-actions">
               <Link href="#services" className="btn btn-primary">
                 <span>
@@ -355,18 +339,11 @@ export default function HomePage() {
               <StatCounter target={10} label="stats.years" />
             </div>
           </div>
-          <div className="scroll-indicator">
-            <span>
-              <T k="hero.scroll" />
-            </span>
-            <div className="scroll-line"></div>
-          </div>
         </section>
 
         {/* ABOUT */}
         <section id="about" className="section about">
           <div className="section-header">
-            <span className="section-num">// 02</span>
             <h2 className="section-title">
               <span>
                 <T k="about.title" />
@@ -456,7 +433,6 @@ export default function HomePage() {
         {/* SERVICES */}
         <section id="services" className="section services">
           <div className="section-header">
-            <span className="section-num">// 03</span>
             <h2 className="section-title">
               <span>
                 <T k="services.title" />
@@ -503,7 +479,6 @@ export default function HomePage() {
         {/* WHY CHOOSE US */}
         <section id="why" className="section why-us">
           <div className="section-header">
-            <span className="section-num">// 04</span>
             <h2 className="section-title">
               <span>
                 <T k="why.title" />
@@ -539,7 +514,6 @@ export default function HomePage() {
         {/* INDUSTRIES */}
         <section id="industries" className="section industries">
           <div className="section-header">
-            <span className="section-num">// 05</span>
             <h2 className="section-title">
               <span>
                 <T k="industries.title" />
@@ -578,7 +552,6 @@ export default function HomePage() {
         {/* PROCESS */}
         <section id="process" className="section process">
           <div className="section-header">
-            <span className="section-num">// 06</span>
             <h2 className="section-title">
               <span>
                 <T k="process.title" />
@@ -615,7 +588,6 @@ export default function HomePage() {
         {/* TECH STACK */}
         <section id="tech" className="section tech-stack">
           <div className="section-header">
-            <span className="section-num">// 07</span>
             <h2 className="section-title">
               <span>
                 <T k="tech.title" />
@@ -649,7 +621,6 @@ export default function HomePage() {
         {/* TESTIMONIALS */}
         <section id="testimonials" className="section testimonials">
           <div className="section-header">
-            <span className="section-num">// 08</span>
             <h2 className="section-title">
               <span>
                 <T k="test.title" />
@@ -694,7 +665,6 @@ export default function HomePage() {
         {/* OFFICES */}
         <section id="offices" className="section offices-section">
           <div className="section-header">
-            <span className="section-num">// 09</span>
             <h2 className="section-title">
               <span>
                 <T k="offices.title" />

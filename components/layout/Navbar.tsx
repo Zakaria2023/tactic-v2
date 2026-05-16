@@ -251,6 +251,15 @@ export default function Navbar() {
             <T k="nav.blog" />
           </Link>
         </li>
+        <li>
+          <Link
+            href="/odoo"
+            className={`nav-link nav-link-odoo ${isActive("/odoo") ? "active" : ""}`}
+            onClick={handleLinkClick}
+          >
+            <T k="nav.odoo" />
+          </Link>
+        </li>
       </ul>
 
       <div className="nav-actions">

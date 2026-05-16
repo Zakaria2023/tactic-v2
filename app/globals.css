@@ -323,14 +323,26 @@ main > section {
   cursor: none;
 }
 
-.nav-link:hover,
-.nav-link.active {
+.nav-link:hover {
   color: var(--white);
   background: rgba(34, 211, 238, 0.06);
 }
 
 .nav-link.active {
   color: var(--gold);
+  background: transparent;
+}
+
+.nav-link.active::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 14px;
+  right: 14px;
+  height: 2px;
+  background: var(--gold);
+  border-radius: 2px;
+  opacity: 0.6;
 }
 
 .nav-caret {
@@ -679,7 +691,7 @@ body.lang-ar .nav-cta:hover .nav-cta-arrow {
 
 /* Hero */
 .hero {
-  padding-top: 140px;
+  padding-top: 80px;
   min-height: 100vh;
 }
 
@@ -4612,6 +4624,1306 @@ body.lang-ar .portfolio-badge {
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+/* ================================
+   ODOO LANDING PAGE
+   ================================ */
+
+.odoo-page {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+}
+
+/* ---- Hero ---- */
+.odoo-hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 80px 60px 60px;
+  overflow: hidden;
+}
+
+.odoo-hero-heading {
+  position: relative;
+  z-index: 3;
+  text-align: center;
+  padding-top: 110px;
+  padding-bottom: 60px;
+  pointer-events: none;
+}
+
+.odoo-brand-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--gold);
+  text-transform: uppercase;
+  border: 1px solid var(--border-bright);
+  background: var(--gold-ghost);
+  padding: 6px 16px;
+  border-radius: 2px;
+  margin-bottom: 20px;
+  pointer-events: auto;
+}
+
+.odoo-brand-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  animation: odoo-pulse 2s infinite;
+}
+
+@keyframes odoo-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.7);
+  }
+}
+
+.odoo-hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  font-weight: 800;
+  color: var(--white);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 14px;
+}
+
+.odoo-hero-title span {
+  color: var(--gold);
+}
+
+.odoo-hero-sub {
+  font-size: 1rem;
+  color: var(--gray);
+  max-width: 480px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* ---- Content area ---- */
+.odoo-hero-inner {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 40px;
+  align-items: center;
+  max-width: 1260px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* ---- Visuals (laptop + phone) ---- */
+.odoo-visuals {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.odoo-laptop-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 700px;
+}
+
+.odoo-laptop-img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  display: block;
+  filter: drop-shadow(0 24px 80px rgba(34, 211, 238, 0.18));
+}
+
+.odoo-phone-wrap {
+  position: absolute;
+  bottom: -30px;
+  right: -20px;
+  z-index: 4;
+  filter: drop-shadow(0 16px 40px rgba(34, 211, 238, 0.25));
+}
+
+.odoo-phone-img {
+  width: 130px;
+  height: auto;
+  display: block;
+}
+
+/* ---- Form card ---- */
+.odoo-form-col {
+  position: relative;
+  z-index: 4;
+  margin-top: 80px;
+  margin-bottom: 40px;
+}
+
+.odoo-form-card {
+  background: rgba(9, 14, 29, 0.92);
+  border: 1px solid var(--border-bright);
+  border-radius: 12px;
+  padding: 40px 36px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.5),
+    0 0 40px rgba(34, 211, 238, 0.06);
+}
+
+.odoo-form-header {
+  margin-bottom: 24px;
+}
+
+.odoo-form-eyebrow {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.odoo-form-title {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.3;
+}
+
+/* ---- Form fields ---- */
+.odoo-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.odoo-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.odoo-label {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--gray);
+  font-family: var(--font-display);
+}
+
+.odoo-required {
+  color: var(--gold);
+}
+
+.odoo-input {
+  background: rgba(34, 211, 238, 0.04);
+  border: 1px solid rgba(239, 246, 255, 0.1);
+  border-radius: 6px;
+  padding: 10px 14px;
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  outline: none;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+  width: 100%;
+}
+
+.odoo-input:focus {
+  border-color: var(--border-bright);
+  box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.12);
+}
+
+.odoo-input::placeholder {
+  color: rgba(123, 143, 171, 0.4);
+}
+
+.odoo-phone-field {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border: 1px solid rgba(239, 246, 255, 0.1);
+  border-radius: 6px;
+  overflow: hidden;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.odoo-phone-field:focus-within {
+  border-color: var(--border-bright);
+  box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.12);
+}
+
+.odoo-phone-prefix {
+  background: rgba(34, 211, 238, 0.08);
+  border-right: 1px solid rgba(239, 246, 255, 0.1);
+  padding: 10px 12px;
+  font-size: 0.875rem;
+  color: var(--gold);
+  font-family: var(--font-display);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.odoo-input-phone {
+  border: none;
+  border-radius: 0;
+  flex: 1;
+}
+
+.odoo-input-phone:focus {
+  border: none;
+  box-shadow: none;
+}
+
+.odoo-submit-btn {
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: var(--gold);
+  color: var(--bg-primary);
+  border: none;
+  border-radius: 6px;
+  padding: 13px 24px;
+  font-family: var(--font-display);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
+}
+
+.odoo-submit-btn:hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
+.btn-arrow {
+  font-size: 1rem;
+  transition: transform 0.2s;
+}
+
+.odoo-submit-btn:hover .btn-arrow {
+  transform: translateX(4px);
+}
+
+/* ---- Success state ---- */
+.odoo-form-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 32px 16px;
+  text-align: center;
+}
+
+.odoo-success-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--gold);
+  color: var(--bg-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  font-weight: 900;
+}
+
+.odoo-form-success p {
+  color: var(--white);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* ---- Features strip ---- */
+.odoo-features {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: rgba(9, 14, 29, 0.6);
+  backdrop-filter: blur(12px);
+}
+
+.odoo-feat-item {
+  flex: 1;
+  min-width: 180px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 28px;
+  border-right: 1px solid var(--border);
+  transition: background 0.2s;
+}
+
+.odoo-feat-item:last-child {
+  border-right: none;
+}
+
+.odoo-feat-item:hover {
+  background: var(--gold-ghost);
+}
+
+.odoo-feat-icon {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.odoo-feat-label {
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--white);
+  letter-spacing: 0.3px;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 1024px) {
+  .odoo-hero-inner {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  .odoo-hero {
+    padding: 0 32px 48px;
+  }
+}
+
+@media (max-width: 640px) {
+  .odoo-hero {
+    padding: 0 20px 40px;
+  }
+
+  .odoo-phone-wrap {
+    right: 0;
+    bottom: -20px;
+  }
+
+  .odoo-phone-img {
+    width: 90px;
+  }
+
+  .odoo-feat-item {
+    padding: 16px 20px;
+    min-width: 140px;
+  }
+}
+
+/* ---- Segments ---- */
+.odoo-segments {
+  position: relative;
+  z-index: 3;
+  padding: 100px 60px;
+}
+
+.odoo-segments-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.odoo-segments-header {
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+.odoo-segments-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  font-weight: 800;
+  color: var(--white);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.odoo-seg-accent {
+  color: var(--gold);
+}
+
+.odoo-segments-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.odoo-seg-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 36px 32px;
+  position: relative;
+  overflow: hidden;
+  transition:
+    border-color 0.25s,
+    transform 0.25s,
+    box-shadow 0.25s;
+}
+
+.odoo-seg-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at top left,
+    rgba(34, 211, 238, 0.05) 0%,
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.odoo-seg-card:hover {
+  border-color: var(--border-bright);
+  transform: translateY(-4px);
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.3),
+    0 0 30px rgba(34, 211, 238, 0.06);
+}
+
+.odoo-seg-card:hover::before {
+  opacity: 1;
+}
+
+.odoo-seg-num {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 2.5px;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  font-weight: 700;
+}
+
+.odoo-seg-card-title {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+
+.odoo-seg-card-desc {
+  font-size: 0.9rem;
+  color: var(--gray);
+  line-height: 1.7;
+}
+
+@media (max-width: 768px) {
+  .odoo-segments {
+    padding: 64px 32px;
+  }
+
+  .odoo-segments-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .odoo-segments {
+    padding: 48px 20px;
+  }
+
+  .odoo-seg-card {
+    padding: 28px 24px;
+  }
+}
+
+/* ---- Modules ---- */
+.odoo-modules {
+  position: relative;
+  z-index: 3;
+  padding: 90px 60px 100px;
+}
+
+.odoo-modules-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.odoo-modules-header {
+  margin-bottom: 52px;
+}
+
+.odoo-modules-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  font-weight: 800;
+  color: var(--white);
+  letter-spacing: -0.02em;
+}
+
+.odoo-modules-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.odoo-mod-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 40px 28px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  cursor: none;
+  transition:
+    border-color 0.25s,
+    transform 0.25s,
+    box-shadow 0.25s;
+  position: relative;
+  overflow: hidden;
+}
+
+.odoo-mod-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at 50% 20%,
+    rgba(34, 211, 238, 0.05) 0%,
+    transparent 65%
+  );
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.odoo-mod-card:hover {
+  border-color: var(--border-bright);
+  transform: translateY(-6px);
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.35),
+    0 0 30px rgba(34, 211, 238, 0.07);
+}
+
+.odoo-mod-card:hover::after {
+  opacity: 1;
+}
+
+.odoo-mod-icon-wrap {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 20px;
+  padding: 12px;
+  transition: background 0.25s;
+}
+
+.odoo-mod-card:hover .odoo-mod-icon-wrap {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.odoo-mod-svg {
+  width: 72px;
+  height: 72px;
+  display: block;
+}
+
+.odoo-mod-label {
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 700;
+  font-style: italic;
+  color: var(--white);
+  text-align: center;
+  letter-spacing: 0.2px;
+}
+
+@media (max-width: 900px) {
+  .odoo-modules {
+    padding: 60px 32px 72px;
+  }
+
+  .odoo-modules-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 540px) {
+  .odoo-modules {
+    padding: 48px 20px 60px;
+  }
+
+  .odoo-modules-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .odoo-mod-card {
+    padding: 28px 16px 20px;
+  }
+
+  .odoo-mod-icon-wrap {
+    width: 80px;
+    height: 80px;
+  }
+
+  .odoo-mod-svg {
+    width: 56px;
+    height: 56px;
+  }
+}
+
+/* ---- What is Odoo ---- */
+.odoo-what {
+  position: relative;
+  z-index: 3;
+  padding: 100px 60px;
+  border-top: 1px solid var(--border);
+}
+
+.odoo-what-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+.odoo-what-intro {
+  position: sticky;
+  top: 100px;
+}
+
+.odoo-what-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 2.8vw, 2.4rem);
+  font-weight: 800;
+  color: var(--white);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-bottom: 22px;
+}
+
+.odoo-what-p {
+  font-size: 0.92rem;
+  color: var(--gray);
+  line-height: 1.8;
+  margin-bottom: 14px;
+}
+
+.odoo-what-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.odoo-what-item {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 28px;
+  align-items: start;
+  padding: 36px 0;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.2s;
+}
+
+.odoo-what-item:first-child {
+  border-top: 1px solid var(--border);
+}
+
+.odoo-what-item-icon {
+  width: 72px;
+  height: 72px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 8px;
+  transition:
+    border-color 0.25s,
+    background 0.25s;
+}
+
+.odoo-what-item:hover .odoo-what-item-icon {
+  border-color: var(--border-bright);
+  background: rgba(34, 211, 238, 0.06);
+}
+
+.odoo-what-svg {
+  width: 52px;
+  height: 52px;
+  display: block;
+}
+
+.odoo-what-item-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.odoo-what-item-top {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.odoo-what-num {
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--gold);
+  font-weight: 700;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+.odoo-what-item-title {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--white);
+  letter-spacing: -0.01em;
+}
+
+.odoo-what-item-desc {
+  font-size: 0.9rem;
+  color: var(--gray);
+  line-height: 1.8;
+  max-width: 580px;
+}
+
+@media (max-width: 960px) {
+  .odoo-what-inner {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  .odoo-what-intro {
+    position: static;
+  }
+
+  .odoo-what {
+    padding: 72px 32px;
+  }
+}
+
+@media (max-width: 540px) {
+  .odoo-what {
+    padding: 56px 20px;
+  }
+
+  .odoo-what-item {
+    grid-template-columns: 56px 1fr;
+    gap: 16px;
+    padding: 28px 0;
+  }
+
+  .odoo-what-item-icon {
+    width: 56px;
+    height: 56px;
+  }
+
+  .odoo-what-svg {
+    width: 40px;
+    height: 40px;
+  }
+
+  .odoo-what-item-title {
+    font-size: 1.1rem;
+  }
+}
+
+/* ---- Integrations ---- */
+.odoo-integrations {
+  position: relative;
+  z-index: 3;
+  padding: 100px 60px;
+  background: rgba(9, 14, 29, 0.5);
+  border-top: 1px solid var(--border);
+}
+
+.odoo-integrations-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.odoo-integrations-header {
+  margin-bottom: 60px;
+}
+
+.odoo-integrations-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  font-weight: 800;
+  color: var(--white);
+  letter-spacing: -0.02em;
+  margin-bottom: 14px;
+}
+
+.odoo-integrations-sub {
+  font-size: 0.95rem;
+  color: var(--gray);
+  max-width: 680px;
+  line-height: 1.75;
+}
+
+.odoo-int-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.odoo-int-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 36px 28px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+  position: relative;
+  overflow: hidden;
+  transition:
+    border-color 0.25s,
+    transform 0.25s,
+    box-shadow 0.25s;
+}
+
+.odoo-int-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at 50% 0%,
+    rgba(34, 211, 238, 0.06) 0%,
+    transparent 65%
+  );
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.odoo-int-card:hover {
+  border-color: var(--border-bright);
+  transform: translateY(-5px);
+  box-shadow:
+    0 18px 48px rgba(0, 0, 0, 0.35),
+    0 0 30px rgba(34, 211, 238, 0.06);
+}
+
+.odoo-int-card:hover::before {
+  opacity: 1;
+}
+
+.odoo-int-icon {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--gold-ghost);
+  border: 1px solid var(--border-bright);
+  border-radius: 18px;
+  color: var(--gold);
+  flex-shrink: 0;
+  transition:
+    background 0.25s,
+    transform 0.25s;
+}
+
+.odoo-int-card:hover .odoo-int-icon {
+  background: var(--gold-soft);
+  transform: scale(1.06);
+}
+
+.odoo-int-icon svg {
+  width: 36px;
+  height: 36px;
+  display: block;
+}
+
+.odoo-int-title {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.3;
+  position: relative;
+  z-index: 1;
+}
+
+.odoo-int-desc {
+  font-size: 0.855rem;
+  color: var(--gray);
+  line-height: 1.75;
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 900px) {
+  .odoo-integrations {
+    padding: 72px 32px;
+  }
+
+  .odoo-int-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 540px) {
+  .odoo-integrations {
+    padding: 56px 20px;
+  }
+
+  .odoo-int-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .odoo-int-card {
+    padding: 28px 20px 24px;
+  }
+}
+
+/* ---- Services Alternating ---- */
+.odoo-services-alt {
+  position: relative;
+  z-index: 3;
+  padding: 80px 60px 100px;
+  border-top: 1px solid var(--border);
+}
+
+.odoo-services-alt-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.odoo-svc-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  padding: 70px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.odoo-svc-row:first-child {
+  border-top: 1px solid var(--border);
+}
+
+.odoo-svc-row-reverse {
+  direction: rtl;
+}
+
+.odoo-svc-row-reverse .odoo-svc-text,
+.odoo-svc-row-reverse .odoo-svc-image {
+  direction: ltr;
+}
+
+.odoo-svc-eyebrow {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--gold);
+  font-weight: 700;
+  text-transform: uppercase;
+  border: 1px solid var(--border-bright);
+  background: var(--gold-ghost);
+  padding: 4px 12px;
+  border-radius: 2px;
+  margin-bottom: 20px;
+}
+
+.odoo-svc-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.5vw, 2.1rem);
+  font-weight: 800;
+  color: var(--white);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: 22px;
+}
+
+.odoo-svc-title span {
+  color: var(--gold);
+}
+
+.odoo-svc-p {
+  font-size: 0.92rem;
+  color: var(--gray);
+  line-height: 1.85;
+  margin-bottom: 12px;
+}
+
+.odoo-svc-p:last-child {
+  margin-bottom: 0;
+}
+
+.odoo-svc-image {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.odoo-svc-img {
+  width: 100%;
+  height: auto;
+  max-width: 480px;
+  border-radius: 16px;
+  display: block;
+  filter: drop-shadow(0 20px 60px rgba(34, 211, 238, 0.1));
+  transition:
+    filter 0.3s,
+    transform 0.3s;
+}
+
+.odoo-svc-row:hover .odoo-svc-img {
+  filter: drop-shadow(0 24px 80px rgba(34, 211, 238, 0.18));
+  transform: translateY(-4px);
+}
+
+@media (max-width: 960px) {
+  .odoo-services-alt {
+    padding: 60px 32px 80px;
+  }
+
+  .odoo-svc-row {
+    grid-template-columns: 1fr;
+    gap: 36px;
+    padding: 52px 0;
+  }
+
+  .odoo-svc-row-reverse {
+    direction: ltr;
+  }
+}
+
+@media (max-width: 540px) {
+  .odoo-services-alt {
+    padding: 48px 20px 64px;
+  }
+
+  .odoo-svc-row {
+    padding: 40px 0;
+    gap: 24px;
+  }
+}
+
+/* ============================================================
+   NAV — Odoo ERP highlight (only when active)
+   ============================================================ */
+.nav-link-odoo.active {
+  position: relative;
+}
+
+.nav-link-odoo.active::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--gold);
+  border-radius: 2px;
+  opacity: 0.6;
+}
+
+/* ============================================================
+   CAREERS PAGE
+   ============================================================ */
+.careers-list-wrap {
+  padding: 80px 40px 120px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.careers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 80px;
+}
+
+.career-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 32px 40px;
+  transition:
+    border-color 0.3s,
+    transform 0.3s,
+    box-shadow 0.3s;
+  cursor: none;
+}
+
+.career-card:hover {
+  border-color: var(--border-bright);
+  transform: translateX(4px);
+  box-shadow: 0 8px 40px rgba(34, 211, 238, 0.08);
+}
+
+body.lang-ar .career-card:hover {
+  transform: translateX(-4px);
+}
+
+.career-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.career-dept {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--gold);
+  text-transform: uppercase;
+}
+
+.career-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  background: var(--gold-ghost);
+  border: 1px solid var(--border-bright);
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.55);
+  letter-spacing: 0.5px;
+}
+
+.career-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 10px;
+  letter-spacing: -0.3px;
+}
+
+.career-desc {
+  font-size: 15px;
+  color: var(--gray);
+  line-height: 1.7;
+  max-width: 720px;
+  margin-bottom: 24px;
+}
+
+.career-apply {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--gold);
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: gap 0.25s;
+}
+
+.career-apply:hover {
+  gap: 18px;
+}
+
+/* Careers CTA block */
+.careers-cta {
+  background: linear-gradient(
+    135deg,
+    var(--bg-secondary) 0%,
+    rgba(34, 211, 238, 0.04) 100%
+  );
+  border: 1px solid var(--border-bright);
+  border-radius: 24px;
+  padding: 64px 48px;
+  text-align: center;
+}
+
+.careers-cta-title {
+  font-family: var(--font-display);
+  font-size: 38px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 16px;
+  letter-spacing: -0.5px;
+}
+
+.careers-cta-desc {
+  font-size: 17px;
+  color: var(--gray);
+  line-height: 1.7;
+  max-width: 520px;
+  margin: 0 auto 36px;
+}
+
+@media (max-width: 960px) {
+  .careers-list-wrap {
+    padding: 60px 32px 80px;
+  }
+
+  .career-card {
+    padding: 28px 28px;
+  }
+}
+
+@media (max-width: 540px) {
+  .careers-list-wrap {
+    padding: 48px 20px 64px;
+  }
+
+  .career-card {
+    padding: 22px 20px;
+  }
+
+  .career-title {
+    font-size: 18px;
+  }
+
+  .careers-cta {
+    padding: 40px 24px;
+  }
+
+  .careers-cta-title {
+    font-size: 26px;
+  }
 }
 
 .blog-side-card {
