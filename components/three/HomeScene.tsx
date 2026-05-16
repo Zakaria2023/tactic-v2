@@ -59,10 +59,116 @@ export default function HomeScene() {
     const letterGroup = new THREE.Group();
     scene.add(letterGroup);
 
+    // Background tech words
+    interface BgWord {
+      group: THREE.Group;
+      floatOffset: number;
+      floatSpeed: number;
+      baseY: number;
+    }
+    const bgWords: BgWord[] = [];
+
+    const techWords = [
+      { text: "NEXT.JS", x: -24, y: 11, z: -13 },
+      { text: "LARAVEL", x: 14, y: 12, z: -15 },
+      { text: ".NET", x: -9, y: 7, z: -17 },
+      { text: "ODOO", x: 18, y: 6, z: -11 },
+      { text: "DJANGO", x: -26, y: -1, z: -14 },
+      { text: "FLUTTER", x: 13, y: -2, z: -16 },
+      { text: "UI & UX", x: -20, y: -11, z: -12 },
+      { text: "SERVER MGMT", x: 7, y: -12, z: -15 },
+    ];
+
     const fontLoader = new FontLoader();
     fontLoader.load(
       "https://unpkg.com/three@0.160.0/examples/fonts/helvetiker_bold.typeface.json",
       (font) => {
+        // ---- Helper: build a word as a Group of letter meshes ----
+        const buildWordGroup = (
+          text: string,
+          size: number,
+          depth: number,
+        ): THREE.Group => {
+          const wGroup = new THREE.Group();
+          const letterSpacing = 0.12;
+          let totalW = 0;
+          const widths: number[] = [];
+
+          for (const ch of text) {
+            if (ch === " ") {
+              widths.push(size * 0.5);
+              totalW += size * 0.5;
+              continue;
+            }
+            const tg = new TextGeometry(ch, {
+              font,
+              size,
+              depth,
+              curveSegments: 5,
+              bevelEnabled: true,
+              bevelThickness: 0.05,
+              bevelSize: 0.03,
+              bevelSegments: 2,
+            });
+            tg.computeBoundingBox();
+            const w = tg.boundingBox!.max.x - tg.boundingBox!.min.x;
+            widths.push(w);
+            totalW += w + letterSpacing;
+            tg.dispose();
+          }
+          totalW -= letterSpacing;
+
+          let xOff = -totalW / 2;
+          for (let i = 0; i < text.length; i++) {
+            const ch = text[i];
+            if (ch === " ") {
+              xOff += widths[i];
+              continue;
+            }
+            const geom = new TextGeometry(ch, {
+              font,
+              size,
+              depth,
+              curveSegments: 5,
+              bevelEnabled: true,
+              bevelThickness: 0.05,
+              bevelSize: 0.03,
+              bevelSegments: 2,
+            });
+            geom.computeBoundingBox();
+            const w = widths[i];
+            const h = geom.boundingBox!.max.y - geom.boundingBox!.min.y;
+            geom.translate(-w / 2, -h / 2, 0);
+            const mat = new THREE.MeshStandardMaterial({
+              color: 0xf2d126,
+              emissive: 0xf2d126,
+              emissiveIntensity: 0.1,
+              metalness: 0.8,
+              roughness: 0.3,
+              transparent: true,
+              opacity: 0.42,
+            });
+            const m = new THREE.Mesh(geom, mat);
+            m.position.x = xOff + w / 2;
+            wGroup.add(m);
+            xOff += w + letterSpacing;
+          }
+          return wGroup;
+        };
+
+        // ---- Place background tech words ----
+        techWords.forEach((tw, idx) => {
+          const grp = buildWordGroup(tw.text, 1.5, 0.35);
+          grp.position.set(tw.x, tw.y, tw.z);
+          scene.add(grp);
+          bgWords.push({
+            group: grp,
+            floatOffset: (idx * 1.4) % (Math.PI * 2),
+            floatSpeed: 0.28 + ((idx * 0.06) % 0.38),
+            baseY: tw.y,
+          });
+        });
+
         const text = "TAKTEEQ";
         const letterSpacing = 0.3;
         const letterSize = 4;
@@ -350,6 +456,14 @@ export default function HomeScene() {
       letterGroup.rotation.y = smoothMouse.x * 0.15;
       letterGroup.rotation.x = -smoothMouse.y * 0.1;
 
+      // Animate background tech words
+      bgWords.forEach((bw) => {
+        const floatY = Math.sin(t * bw.floatSpeed + bw.floatOffset) * 0.6;
+        bw.group.position.y = bw.baseY + floatY;
+        bw.group.rotation.y = Math.sin(t * 0.18 + bw.floatOffset) * 0.09;
+        bw.group.rotation.x = Math.cos(t * 0.13 + bw.floatOffset) * 0.06;
+      });
+
       // Camera position follows mouse + scroll
       camera.position.x = smoothMouse.x * 5;
       camera.position.y = -smoothMouse.y * 3 - scrollY * 2;
@@ -375,6 +489,12 @@ export default function HomeScene() {
       letters.forEach((l) => {
         l.geometry.dispose();
         (l.material as THREE.Material).dispose();
+      });
+      bgWords.forEach((bw) => {
+        bw.group.children.forEach((child) => {
+          (child as THREE.Mesh).geometry.dispose();
+          ((child as THREE.Mesh).material as THREE.Material).dispose();
+        });
       });
     };
   }, []);

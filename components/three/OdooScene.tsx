@@ -5,6 +5,17 @@ import * as THREE from "three";
 import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
 import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
 
+interface LetterUserData {
+  originalPos: THREE.Vector3;
+  initialPos: THREE.Vector3;
+  targetPos: THREE.Vector3;
+  targetRot: { x: number; y: number; z: number };
+  floatOffset: number;
+  floatSpeed: number;
+  hovered: boolean;
+  color: number;
+}
+
 export default function OdooScene() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -14,12 +25,12 @@ export default function OdooScene() {
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(
-      65,
+      75,
       window.innerWidth / window.innerHeight,
       0.1,
       500,
     );
-    camera.position.z = 28;
+    camera.position.z = 30;
 
     const renderer = new THREE.WebGLRenderer({
       canvas,
@@ -29,33 +40,113 @@ export default function OdooScene() {
     });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
-    renderer.setClearColor(0x060912, 1);
+    renderer.setClearColor(0x1e1e1e, 1);
 
-    // Lights
-    scene.add(new THREE.AmbientLight(0x22d3ee, 0.3));
-    const pl1 = new THREE.PointLight(0x22d3ee, 2.5, 100);
-    pl1.position.set(15, 15, 20);
+    // ============ LIGHTS ============
+    scene.add(new THREE.AmbientLight(0xf2d126, 0.4));
+    const pl1 = new THREE.PointLight(0xf2d126, 3, 100);
+    pl1.position.set(20, 20, 20);
     scene.add(pl1);
-    const pl2 = new THREE.PointLight(0x22d3ee, 1.5, 100);
-    pl2.position.set(-15, -15, 20);
+    const pl2 = new THREE.PointLight(0xf2d126, 2, 100);
+    pl2.position.set(-20, -20, 20);
     scene.add(pl2);
 
-    // Letters
-    const letters: {
+    // ============ ODOO 3D LETTERS ============
+    const letters: THREE.Mesh[] = [];
+    const letterGroup = new THREE.Group();
+    scene.add(letterGroup);
+
+    // Background service words
+    interface BgWord {
       mesh: THREE.Mesh;
       floatOffset: number;
       floatSpeed: number;
-    }[] = [];
-    const letterGroup = new THREE.Group();
-    scene.add(letterGroup);
+      baseY: number;
+    }
+    const bgWords: BgWord[] = [];
+
+    const serviceWords = [
+      { text: "ACCOUNTING", x: -20, y: 9, z: -14 },
+      { text: "SALES & CRM", x: 10, y: 8, z: -16 },
+      { text: "E-COMMERCE", x: -22, y: -2, z: -12 },
+      { text: "INVENTORY", x: 14, y: -3, z: -15 },
+      { text: "PROJECTS", x: -14, y: -10, z: -13 },
+      { text: "HR", x: 18, y: -9, z: -11 },
+    ];
 
     const fontLoader = new FontLoader();
     fontLoader.load(
       "https://unpkg.com/three@0.160.0/examples/fonts/helvetiker_bold.typeface.json",
       (font) => {
-        const text = "Odoo";
-        const letterSpacing = 0.5;
-        const letterSize = 7;
+        // ---- Helper: build a single-line word mesh ----
+        const buildWordMesh = (
+          text: string,
+          size: number,
+          depth: number,
+          color: number,
+          emissiveIntensity: number,
+          opacity: number,
+        ): THREE.Mesh => {
+          const letterSpacing = 0.15;
+          let totalW = 0;
+          const widths: number[] = [];
+          for (const ch of text) {
+            const tg = new TextGeometry(ch, {
+              font,
+              size,
+              depth,
+              curveSegments: 5,
+              bevelEnabled: true,
+              bevelThickness: 0.06,
+              bevelSize: 0.04,
+              bevelSegments: 2,
+            });
+            tg.computeBoundingBox();
+            const w = tg.boundingBox!.max.x - tg.boundingBox!.min.x;
+            widths.push(w);
+            totalW += w + letterSpacing;
+            tg.dispose();
+          }
+          totalW -= letterSpacing;
+
+          const group = new THREE.Group() as unknown as THREE.Mesh;
+          let xOff = -totalW / 2;
+          for (let i = 0; i < text.length; i++) {
+            const geom = new TextGeometry(text[i], {
+              font,
+              size,
+              depth,
+              curveSegments: 5,
+              bevelEnabled: true,
+              bevelThickness: 0.06,
+              bevelSize: 0.04,
+              bevelSegments: 2,
+            });
+            geom.computeBoundingBox();
+            const w = widths[i];
+            const h = geom.boundingBox!.max.y - geom.boundingBox!.min.y;
+            geom.translate(-w / 2, -h / 2, 0);
+            const mat = new THREE.MeshStandardMaterial({
+              color,
+              emissive: color,
+              emissiveIntensity,
+              metalness: 0.8,
+              roughness: 0.3,
+              transparent: opacity < 1,
+              opacity,
+            });
+            const m = new THREE.Mesh(geom, mat);
+            m.position.x = xOff + w / 2;
+            (group as unknown as THREE.Group).add(m);
+            xOff += w + letterSpacing;
+          }
+          return group;
+        };
+
+        // ---- Main ODOO letters (interactive) ----
+        const text = "ODOO";
+        const letterSpacing = 0.3;
+        const letterSize = 4;
 
         let totalWidth = 0;
         const letterWidths: number[] = [];
@@ -63,11 +154,11 @@ export default function OdooScene() {
           const tg = new TextGeometry(text[i], {
             font,
             size: letterSize,
-            depth: 1.5,
+            depth: 1.2,
             curveSegments: 6,
             bevelEnabled: true,
-            bevelThickness: 0.2,
-            bevelSize: 0.1,
+            bevelThickness: 0.15,
+            bevelSize: 0.08,
             bevelSegments: 3,
           });
           tg.computeBoundingBox();
@@ -83,11 +174,11 @@ export default function OdooScene() {
           const geom = new TextGeometry(text[i], {
             font,
             size: letterSize,
-            depth: 1.5,
+            depth: 1.2,
             curveSegments: 6,
             bevelEnabled: true,
-            bevelThickness: 0.2,
-            bevelSize: 0.1,
+            bevelThickness: 0.15,
+            bevelSize: 0.08,
             bevelSegments: 3,
           });
           geom.computeBoundingBox();
@@ -96,37 +187,198 @@ export default function OdooScene() {
           geom.translate(-w / 2, -h / 2, 0);
 
           const mat = new THREE.MeshStandardMaterial({
-            color: 0x22d3ee,
-            emissive: 0x22d3ee,
-            emissiveIntensity: 0.08,
-            metalness: 0.9,
-            roughness: 0.2,
-            transparent: true,
-            opacity: 0.18,
+            color: 0xf2d126,
+            emissive: 0xf2d126,
+            emissiveIntensity: 0.15,
+            metalness: 0.85,
+            roughness: 0.25,
           });
 
           const mesh = new THREE.Mesh(geom, mat);
-          mesh.position.set(xPos + w / 2, 0, -5);
-          letters.push({
-            mesh,
+          mesh.position.set(xPos + w / 2, 0, 0);
+          const userData: LetterUserData = {
+            originalPos: mesh.position.clone(),
+            initialPos: mesh.position.clone(),
+            targetPos: mesh.position.clone(),
+            targetRot: { x: 0, y: 0, z: 0 },
             floatOffset: Math.random() * Math.PI * 2,
-            floatSpeed: 0.4 + Math.random() * 0.3,
-          });
+            floatSpeed: 0.5 + Math.random() * 0.5,
+            hovered: false,
+            color: 0xf2d126,
+          };
+          mesh.userData = userData;
+
+          letters.push(mesh);
           letterGroup.add(mesh);
           xPos += w + letterSpacing;
         }
+
+        // ---- Background service word meshes ----
+        serviceWords.forEach((sw, idx) => {
+          const wordMesh = buildWordMesh(
+            sw.text,
+            1.6,
+            0.4,
+            0xf2d126,
+            0.1,
+            0.45,
+          );
+          wordMesh.position.set(sw.x, sw.y, sw.z);
+          scene.add(wordMesh);
+          bgWords.push({
+            mesh: wordMesh,
+            floatOffset: (idx * 1.3) % (Math.PI * 2),
+            floatSpeed: 0.3 + ((idx * 0.07) % 0.4),
+            baseY: sw.y,
+          });
+        });
       },
     );
 
-    // Mouse parallax
-    const smoothMouse = new THREE.Vector2();
+    // ============ MOUSE INTERACTION ============
+    const raycaster = new THREE.Raycaster();
+    const mouseVector = new THREE.Vector2();
     const targetMouse = new THREE.Vector2();
-    const onMouseMove = (e: MouseEvent) => {
-      targetMouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-      targetMouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-    };
-    window.addEventListener("mousemove", onMouseMove);
+    const smoothMouse = new THREE.Vector2();
+    let isDragging = false;
+    let draggedLetter: THREE.Mesh | null = null;
+    const dragOffset = new THREE.Vector3();
 
+    const getPointer = (e: MouseEvent | Touch) => ({
+      x: (e.clientX / window.innerWidth) * 2 - 1,
+      y: -(e.clientY / window.innerHeight) * 2 + 1,
+    });
+
+    const onMouseMove = (e: MouseEvent) => {
+      const p = getPointer(e);
+      mouseVector.set(p.x, p.y);
+      targetMouse.set(p.x, p.y);
+
+      if (isDragging && draggedLetter) {
+        raycaster.setFromCamera(mouseVector, camera);
+        const planeZ = (draggedLetter.userData as LetterUserData).originalPos.z;
+        const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), -planeZ);
+        const intersection = new THREE.Vector3();
+        if (raycaster.ray.intersectPlane(plane, intersection)) {
+          (draggedLetter.userData as LetterUserData).targetPos.x =
+            intersection.x - dragOffset.x;
+          (draggedLetter.userData as LetterUserData).targetPos.y =
+            intersection.y - dragOffset.y;
+        }
+        return;
+      }
+
+      raycaster.setFromCamera(mouseVector, camera);
+      const intersects = raycaster.intersectObjects(letters);
+      letters.forEach((l) => {
+        if (
+          (l.userData as LetterUserData).hovered &&
+          !intersects.find((i) => i.object === l)
+        ) {
+          (l.userData as LetterUserData).hovered = false;
+        }
+      });
+      if (intersects.length > 0) {
+        (
+          (intersects[0].object as THREE.Mesh).userData as LetterUserData
+        ).hovered = true;
+        canvas.style.cursor = "grab";
+      } else {
+        canvas.style.cursor = "default";
+      }
+    };
+
+    const onMouseDown = (e: MouseEvent) => {
+      const p = getPointer(e);
+      mouseVector.set(p.x, p.y);
+      raycaster.setFromCamera(mouseVector, camera);
+      const intersects = raycaster.intersectObjects(letters);
+      if (intersects.length > 0) {
+        isDragging = true;
+        draggedLetter = intersects[0].object as THREE.Mesh;
+        const pt = intersects[0].point;
+        dragOffset.set(
+          pt.x - draggedLetter.position.x,
+          pt.y - draggedLetter.position.y,
+          0,
+        );
+        canvas.style.cursor = "grabbing";
+      }
+    };
+
+    const onMouseUp = () => {
+      if (draggedLetter) {
+        const ud = draggedLetter.userData as LetterUserData;
+        ud.originalPos.copy(ud.targetPos);
+      }
+      isDragging = false;
+      draggedLetter = null;
+      canvas.style.cursor = "default";
+    };
+
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mousedown", onMouseDown);
+    window.addEventListener("mouseup", onMouseUp);
+
+    // Touch
+    const onTouchStart = (e: TouchEvent) => {
+      if (e.touches.length === 0) return;
+      const t = e.touches[0];
+      const p = getPointer(t);
+      mouseVector.set(p.x, p.y);
+      raycaster.setFromCamera(mouseVector, camera);
+      const intersects = raycaster.intersectObjects(letters);
+      if (intersects.length > 0) {
+        isDragging = true;
+        draggedLetter = intersects[0].object as THREE.Mesh;
+        const pt = intersects[0].point;
+        dragOffset.set(
+          pt.x - draggedLetter.position.x,
+          pt.y - draggedLetter.position.y,
+          0,
+        );
+      }
+    };
+    const onTouchMove = (e: TouchEvent) => {
+      if (e.touches.length === 0) return;
+      const t = e.touches[0];
+      const p = getPointer(t);
+      mouseVector.set(p.x, p.y);
+      targetMouse.set(p.x, p.y);
+      if (isDragging && draggedLetter) {
+        raycaster.setFromCamera(mouseVector, camera);
+        const planeZ = (draggedLetter.userData as LetterUserData).originalPos.z;
+        const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), -planeZ);
+        const intersection = new THREE.Vector3();
+        if (raycaster.ray.intersectPlane(plane, intersection)) {
+          (draggedLetter.userData as LetterUserData).targetPos.x =
+            intersection.x - dragOffset.x;
+          (draggedLetter.userData as LetterUserData).targetPos.y =
+            intersection.y - dragOffset.y;
+        }
+      }
+    };
+    const onTouchEnd = () => {
+      if (draggedLetter) {
+        const ud = draggedLetter.userData as LetterUserData;
+        ud.originalPos.copy(ud.targetPos);
+      }
+      isDragging = false;
+      draggedLetter = null;
+    };
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: true });
+    window.addEventListener("touchend", onTouchEnd);
+
+    // Scroll
+    let scrollY = 0,
+      targetScroll = 0;
+    const onScroll = () => {
+      targetScroll = window.scrollY / window.innerHeight;
+    };
+    window.addEventListener("scroll", onScroll);
+
+    // Resize
     const onResize = () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
@@ -134,56 +386,101 @@ export default function OdooScene() {
     };
     window.addEventListener("resize", onResize);
 
+    // ============ ANIMATION ============
     const clock = new THREE.Clock();
     let rafId: number;
     const animate = () => {
       rafId = requestAnimationFrame(animate);
       const t = clock.getElapsedTime();
-      smoothMouse.x += (targetMouse.x - smoothMouse.x) * 0.04;
-      smoothMouse.y += (targetMouse.y - smoothMouse.y) * 0.04;
+      smoothMouse.x += (targetMouse.x - smoothMouse.x) * 0.05;
+      smoothMouse.y += (targetMouse.y - smoothMouse.y) * 0.05;
+      scrollY += (targetScroll - scrollY) * 0.05;
 
-      letters.forEach(({ mesh, floatOffset, floatSpeed }, i) => {
-        mesh.position.y +=
-          (Math.sin(t * floatSpeed + floatOffset) * 0.3 - mesh.position.y) *
-          0.02;
-        mesh.rotation.y = Math.sin(t * 0.5 + i * 0.8) * 0.12;
-        mesh.rotation.x = Math.cos(t * 0.4 + i * 0.5) * 0.07;
+      letters.forEach((letter, i) => {
+        const ud = letter.userData as LetterUserData;
+        if (letter !== draggedLetter) {
+          const floatY = Math.sin(t * ud.floatSpeed + ud.floatOffset) * 0.4;
+          const tY = ud.targetPos.y + floatY;
+          letter.position.x += (ud.targetPos.x - letter.position.x) * 0.1;
+          letter.position.y += (tY - letter.position.y) * 0.1;
+          letter.position.z += (ud.targetPos.z - letter.position.z) * 0.1;
+        } else {
+          letter.position.x += (ud.targetPos.x - letter.position.x) * 0.3;
+          letter.position.y += (ud.targetPos.y - letter.position.y) * 0.3;
+        }
+
+        const mat = letter.material as THREE.MeshStandardMaterial;
+        if (ud.hovered && letter !== draggedLetter) {
+          ud.targetRot.y = Math.sin(t * 3) * 0.3;
+          ud.targetRot.x = Math.cos(t * 2) * 0.2;
+          letter.scale.x += (1.15 - letter.scale.x) * 0.1;
+          letter.scale.y += (1.15 - letter.scale.y) * 0.1;
+          letter.scale.z += (1.15 - letter.scale.z) * 0.1;
+          mat.emissiveIntensity += (0.5 - mat.emissiveIntensity) * 0.1;
+        } else if (letter === draggedLetter) {
+          ud.targetRot.y += 0.05;
+          letter.scale.x += (1.25 - letter.scale.x) * 0.1;
+          letter.scale.y += (1.25 - letter.scale.y) * 0.1;
+          letter.scale.z += (1.25 - letter.scale.z) * 0.1;
+          mat.emissiveIntensity += (0.7 - mat.emissiveIntensity) * 0.1;
+        } else {
+          ud.targetRot.y = Math.sin(t * 0.8 + i * 0.5) * 0.15;
+          ud.targetRot.x = Math.cos(t * 0.6 + i * 0.3) * 0.1;
+          letter.scale.x += (1 - letter.scale.x) * 0.1;
+          letter.scale.y += (1 - letter.scale.y) * 0.1;
+          letter.scale.z += (1 - letter.scale.z) * 0.1;
+          mat.emissiveIntensity += (0.15 - mat.emissiveIntensity) * 0.05;
+        }
+
+        letter.rotation.x += (ud.targetRot.x - letter.rotation.x) * 0.1;
+        letter.rotation.y += (ud.targetRot.y - letter.rotation.y) * 0.1;
+        letter.rotation.z += (ud.targetRot.z - letter.rotation.z) * 0.1;
       });
 
-      letterGroup.rotation.y = smoothMouse.x * 0.1;
-      letterGroup.rotation.x = -smoothMouse.y * 0.06;
+      letterGroup.rotation.y = smoothMouse.x * 0.15;
+      letterGroup.rotation.x = -smoothMouse.y * 0.1;
 
-      camera.position.x = smoothMouse.x * 3;
-      camera.position.y = -smoothMouse.y * 2;
+      // Animate background service words
+      bgWords.forEach((bw) => {
+        const floatY = Math.sin(t * bw.floatSpeed + bw.floatOffset) * 0.5;
+        bw.mesh.position.y = bw.baseY + floatY;
+        bw.mesh.rotation.y = Math.sin(t * 0.2 + bw.floatOffset) * 0.08;
+        bw.mesh.rotation.x = Math.cos(t * 0.15 + bw.floatOffset) * 0.05;
+      });
+
+      camera.position.x = smoothMouse.x * 5;
+      camera.position.y = -smoothMouse.y * 3 - scrollY * 2;
       camera.lookAt(0, 0, 0);
 
       renderer.render(scene, camera);
     };
     animate();
 
+    // ============ CLEANUP ============
     return () => {
       cancelAnimationFrame(rafId);
       window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mousedown", onMouseDown);
+      window.removeEventListener("mouseup", onMouseUp);
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("touchend", onTouchEnd);
+      window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onResize);
       renderer.dispose();
-      letters.forEach(({ mesh }) => {
-        mesh.geometry.dispose();
-        (mesh.material as THREE.Material).dispose();
+      letters.forEach((l) => {
+        l.geometry.dispose();
+        (l.material as THREE.Material).dispose();
+      });
+      bgWords.forEach((bw) => {
+        const group = bw.mesh as unknown as THREE.Group;
+        group.children.forEach((child) => {
+          (child as THREE.Mesh).geometry.dispose();
+          ((child as THREE.Mesh).material as THREE.Material).dispose();
+        });
       });
     };
   }, []);
 
-  return (
-    <canvas
-      ref={canvasRef}
-      style={{
-        position: "fixed",
-        inset: 0,
-        width: "100%",
-        height: "100%",
-        zIndex: 0,
-        pointerEvents: "none",
-      }}
-    />
-  );
+  return <canvas ref={canvasRef} id="bg-canvas" />;
 }
